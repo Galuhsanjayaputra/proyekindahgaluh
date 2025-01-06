@@ -3,6 +3,7 @@
 use App\Http\Controllers\EkspedisiController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SearchHistoryController; // Tambahkan import untuk SearchHistoryController
 use App\Http\Controllers\TransaksiAdminController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\UserController;
@@ -11,7 +12,13 @@ use Illuminate\Support\Facades\Route;
 // Home & Shop Routes
 Route::get('/', [TransaksiController::class, 'index'])->name('home');
 Route::get('/shop', [Controller::class, 'shop'])->name('shop');
-Route::post('/delete-search-history', [Controller::class, 'deleteSearchHistory'])->name('deleteSearchHistory'); // Tambahan untuk hapus riwayat pencarian
+
+// Tambahkan routing untuk riwayat pencarian
+Route::middleware(['auth'])->group(function () {
+    Route::get('/search-history', [SearchHistoryController::class, 'index'])->name('search.history');
+    Route::post('/search-history/store', [SearchHistoryController::class, 'store'])->name('storeSearchHistory');
+    Route::post('/search-history/delete', [SearchHistoryController::class, 'delete'])->name('deleteSearchHistory');
+});
 
 // Transaksi Routes
 Route::get('/transaksi', [Controller::class, 'transaksi'])->name('transaksi');

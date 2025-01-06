@@ -9,5 +9,11 @@ class SearchHistory extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['query', 'user_id'];
+    protected $fillable = ['user_id', 'query'];
+
+    // Relasi dengan model User
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
